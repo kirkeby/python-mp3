@@ -280,7 +280,7 @@ def good_data(f):
              max - index > 16 and \
              buffer[index + 8 : index + 16] == 'WAVEfmt ':
             # RIFF headers
-            length = struct.unpack('L', buffer[index + 4 : index + 8])
+            length, = struct.unpack('L', buffer[index + 4 : index + 8])
 
         if good:
             if index + length <= max:

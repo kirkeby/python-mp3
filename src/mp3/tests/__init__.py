@@ -1,5 +1,6 @@
 import StringIO
 import unittest
+import struct
 import mp3
 
 stringio = StringIO.StringIO
@@ -36,6 +37,8 @@ good_frame = '\xff\xfb\x90\x64\x76\x00\x05\x34\x66\x50\xf6\x69\x20\x00' \
              '\xff\x72\xae\xe6\xfb\xad\x5f\xf7\xbe\xeb\x37'
 good_frame_header = 1, 3, 0, 128, 44100, 0
 
+riff_frame = 'RIFF%sWAVEfmt Hello, World!' % struct.pack('L', len('Hello, World!'))
+
 title = 'Happy Bithday toooo meeeee!'
 artist = 'My self'
 album = ''
@@ -67,6 +70,17 @@ class GoodDataTestCase(unittest.TestCase):
         l = list(mp3.good_data(stringio(good_frame + good_frame)))
         self.assertEquals(len(l), 2)
         self.assertEquals(l, [ good_frame, good_frame ])
+
+    def testRIFF(self):
+        f = stringio(riff_frame)
+        self.assertEquals([ ],
+                          list(mp3.good_data(f)))
+        f = stringio(good_frame + riff_frame)
+        self.assertEquals([ good_frame ],
+                          list(mp3.good_data(f)))
+        f = stringio(riff_frame + good_frame)
+        self.assertEquals([ good_frame ],
+                          list(mp3.good_data(f)))
 
     def testGoodID3v1Tag(self):
         self.assertEquals([ good_id3v1_tag ],
