@@ -1,5 +1,5 @@
 #
-# ID3 -- Python module for reading ID3 (v1) tags from MP3 files
+# id3.v1 -- Python module for reading ID3 version 1 tags
 # Copyright (C) 2003-2004  Sune Kirkeby
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -16,6 +16,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
+
+__all__ = ['id3tag']
 
 import struct
 
@@ -148,21 +150,13 @@ id3genres = {
     125: 'Dance Hall',
 }
 
-def id3tag(f, **kwargs):
+def id3tag(f):
     f.seek(-128, 2)
     tag = f.read(128)
     f.seek(0, 0)
 
     if len(tag) != 128 or tag[0:3] != 'TAG':
-        v = {
-            'title': '[No ID3-tag]',
-            'artist': '[No ID3-tag]',
-            'album': '[No ID3-tag]',
-            'year': '',
-            'comment': '',
-            'track': 0,
-            'genre': '[No ID3-tag]',
-        }
+        v = None
 
     else:
         v = {
@@ -179,7 +173,4 @@ def id3tag(f, **kwargs):
             # writes, I will go along.
             v['track'] = 0
 
-    w = {}
-    w.update(kwargs)
-    w.update(v)
-    return w
+    return v
