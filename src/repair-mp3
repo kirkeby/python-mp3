@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+#
+# MP3 Tools -- script for extracting good data from broken MP3 files
+# Copyright (C) 2004  Sune Kirkeby
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+
+from __future__ import generators
+
+import mp3
+
+if __name__ == '__main__':
+    import sys
+    import os
+    import traceback
+
+    for path in sys.argv[1:]:
+        try:
+            sys.stderr.write(path + ' . . .\n')
+            
+            os.rename(path, path + '.orig')
+            f = open(path, 'w')
+            for data in mp3.good_data(open(path + '.orig', 'r')):
+                f.write(data)
+            f.close()
+
+        except:
+            traceback.print_exc()
