@@ -258,6 +258,7 @@ def good_data(f):
             # ID3v1 tag
             good = 1
             length = 128
+            
         elif buffer.startswith('ID3', index) and max - index > 9:
             # IV3v2 tag
             good = 1
@@ -265,6 +266,7 @@ def good_data(f):
                      (ord(buffer[index + 7]) << 14) + \
                      (ord(buffer[index + 8]) << 7) + \
                      ord(buffer[index + 9]) + 10
+                     
         elif buffer[index] == '\xff' and \
              not buffer[index + 1] == '\xff' and \
              (ord(buffer[index + 1]) & 224) == 224:
@@ -276,16 +278,10 @@ def good_data(f):
             except MP3Error, e:
                 pass
 
-        elif buffer.startswith('RIFF', index) and \
-             max - index > 16 and \
-             buffer[index + 8 : index + 16] == 'WAVEfmt ':
-            # RIFF headers
-            length, = struct.unpack('L', buffer[index + 4 : index + 8])
+        else:
+            length = 1
 
         if good:
             if index + length <= max:
                 yield buffer[index : index + length]
-        else:
-            if not length:
-                length = 1
         index = index + length
