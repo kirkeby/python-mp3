@@ -4,13 +4,13 @@ import v1
 import neds_id3reader
 
 no_tag = {
-    'title': '',
-    'artist': '',
-    'album': '',
-    'year': '',
-    'comment': '',
-    'track': 0,
-    'genre': '',
+    'title': None,
+    'artist': None,
+    'album': None,
+    'year': None,
+    'comment': None,
+    'track': None,
+    'genre': None,
 }
 
 def id3tag(f, **kwargs):
@@ -31,9 +31,12 @@ def id3tag(f, **kwargs):
     w = {}
     w.update(no_tag)
     w.update(kwargs)
-    w.update(v1tag)
-    w.update(tag)
+    if v1tag:
+        w.update(v1tag)
+    for k, v in tag.items():
+        if v:
+            w[k] = v
     return w
 
-def load(path):
-    return id3tag(open(path), path=path)
+def load(path, **kwargs):
+    return id3tag(open(path), path=path, **kwargs)
