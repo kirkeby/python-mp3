@@ -29,6 +29,7 @@ setup(name = "MP3 Tools", version = "0.1",
       ],
       packages = [
         'mp3', 'mp3.tests',
+        'id3',
       ],
       package_dir = { '': 'src' },
     )
