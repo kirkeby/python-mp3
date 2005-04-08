@@ -26,6 +26,7 @@ setup(name = "MP3 Tools", version = "0.1",
       scripts = [
         'src/repair-mp3',
         'src/test-mp3',
+        'src/dump-id3',
       ],
       packages = [
         'mp3', 'mp3.tests',
