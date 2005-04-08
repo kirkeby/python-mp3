@@ -33,9 +33,27 @@ def id3tag(f, **kwargs):
     w.update(kwargs)
     if v1tag:
         w.update(v1tag)
+    try:
+        tag['track'] = int(tag['track'])
+    except:
+        tag['track'] = 0
     for k, v in tag.items():
         if v:
             w[k] = v
+    for k in w:
+        if not isinstance(w[k], str):
+            continue
+        if k == 'path':
+            break
+        for encoding in [None, 'utf-8', 'iso-8859-1']:
+            try:
+                w[k] = w[k].decode(encoding)
+                break
+            except:
+                pass
+        else:
+            w[k] = w[k].decode('ascii', 'replace')
+
     return w
 
 def load(path, **kwargs):
