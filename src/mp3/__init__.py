@@ -253,7 +253,7 @@ def good_data(f):
     index = 0
     max = len(buffer)
     while index < max - 4:
-        good = length = 0
+        good, length = 0, 1
         if buffer.startswith('TAG', index):
             # ID3v1 tag
             good = 1
@@ -277,9 +277,6 @@ def good_data(f):
                 good = 1
             except MP3Error, e:
                 pass
-
-        else:
-            length = 1
 
         if good:
             if index + length <= max:
