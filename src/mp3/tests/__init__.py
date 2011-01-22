@@ -90,6 +90,10 @@ class GoodDataTestCase(unittest.TestCase):
         self.assertEquals([ good_frame, good_id3v1_tag ],
                           list(mp3.good_data(stringio(good_frame + good_id3v1_tag))))
 
+    def test_framedata(self):
+        self.assertEquals(good_frame[4:],
+                          mp3.framedata(good_frame, 0, good_frame_header))
+
     def testSpuriousZeros(self):
         self.assertEquals([ good_frame ],
                           list(mp3.good_data(stringio(good_frame + '\x00'))))
