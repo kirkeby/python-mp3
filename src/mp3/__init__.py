@@ -145,7 +145,7 @@ def framedata(dat, i, hdr):
     version, layer, crc, bitrate, samplingrate, padding = hdr
     start = i + 4 + crc * 2
     end = i + framelen(hdr)
-    return frame[i+start : i+end]
+    return dat[i+start : i+end]
 
 def framelen(hdr):
     """framelen(header) -> length
